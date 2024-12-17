@@ -111,5 +111,3 @@ Contributions to WorldSphere are welcome! Please follow these steps to contribut
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-This README provides a comprehensive overview of the WorldSphere project, including its features, setup instructions, usage guidelines, and contribution information. It should give users and developers a clear understanding of the project and how to work with it.
