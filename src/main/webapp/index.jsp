@@ -4,11 +4,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
+    <!-- Meta information for responsiveness and character encoding -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorldSphere</title>
+
+    <!-- Link to Google Fonts for styling -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Inline CSS styles for the page -->
     <style>
+        /* Root variables for light and dark modes */
         :root {
             --bg-color: #f0f2f5;
             --text-color: #333;
@@ -33,6 +39,7 @@
             --footer-text: #a0a0a0;
         }
 
+        /* Body styling for overall appearance */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -44,6 +51,8 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* Container for main content */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -51,10 +60,14 @@
             padding: 20px;
             flex-grow: 1;
         }
+
+        /* Title styling */
         h1 {
             text-align: center;
             margin-bottom: 40px;
         }
+
+        /* Grid layout for clock cards */
         .clock-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -63,6 +76,8 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
+        /* Individual clock card styling */
         .clock-card {
             background: var(--card-bg);
             border-radius: 10px;
@@ -71,73 +86,21 @@
             text-align: center;
             transition: transform 0.2s, background 0.3s;
         }
+
         .clock-card:hover {
             transform: translateY(-5px);
         }
+
+        /* Styling for day and night modes on cards */
         .clock-card.day {
             background: var(--day-gradient);
         }
+
         .clock-card.night {
             background: var(--night-gradient);
         }
-        .city-name {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        .time {
-            font-size: 2em;
-            font-weight: bold;
-            color: var(--card-text);
-            margin: 10px 0;
-        }
-        .flag {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .day-night {
-            font-size: 1.5em;
-        }
-        .mode-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .mode-toggle label {
-            width: 60px;
-            height: 34px;
-            background-color: #ccc;
-            border-radius: 34px;
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: background-color 0.3s;
-        }
-        .mode-toggle label::after {
-            content: '🌞';
-            width: 26px;
-            height: 26px;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .mode-toggle input:checked + label {
-            background-color: #3a3a3a;
-        }
-        .mode-toggle input:checked + label::after {
-            left: 30px;
-            content: '🌙';
-        }
-        .mode-toggle input {
-            display: none;
-        }
+
+        /* Footer styling */
         footer {
             background-color: var(--footer-bg);
             color: var(--footer-text);
@@ -145,31 +108,30 @@
             padding: 20px;
             margin-top: 40px;
         }
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+
+        /* Footer links styling */
         .footer-links a {
             color: var(--footer-text);
             text-decoration: none;
             margin: 0 10px;
         }
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Dark mode toggle switch -->
     <div class="mode-toggle">
         <input type="checkbox" id="darkmode-toggle">
         <label for="darkmode-toggle"></label>
     </div>
+
+    <!-- Main title -->
     <h1>WorldSphere</h1>
+
+    <!-- Grid layout for clocks -->
     <div class="clock-grid">
         <%
+            // List of cities with their time zones and flags
             String[][] cities = {
                     {"India", "Asia/Kolkata", "🇮🇳"},
                     {"London", "Europe/London", "🇬🇧"},
@@ -182,13 +144,15 @@
                     {"Paris", "Europe/Paris", "🇫🇷"}
             };
 
+            // Formatter for displaying time
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+            // Loop through each city and render a clock card
             for (String[] city : cities) {
-                ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(city[1]));
+                ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(city[1])); // Get current time
                 int hour = zonedDateTime.getHour();
-                boolean isDaytime = hour >= 6 && hour < 18;
-                String timeString = zonedDateTime.format(timeFormatter);
+                boolean isDaytime = hour >= 6 && hour < 18; // Determine if it is daytime
+                String timeString = zonedDateTime.format(timeFormatter); // Format time
         %>
         <div class="clock-card <%= isDaytime ? "day" : "night" %>">
             <div class="flag"><%= city[2] %></div>
@@ -201,6 +165,8 @@
         %>
     </div>
 </div>
+
+<!-- Footer section -->
 <footer>
     <div class="footer-content">
         <div class="copyright">
@@ -212,17 +178,20 @@
         </div>
     </div>
 </footer>
+
+<!-- JavaScript for dark mode and clock updates -->
 <script>
-    // Dark mode toggle functionality
+    // JavaScript for dark mode toggle and updating times
     const darkModeToggle = document.getElementById('darkmode-toggle');
     const body = document.body;
 
-    // Check for saved dark mode preference
+    // Check for saved dark mode preference in local storage
     if (localStorage.getItem('darkMode') === 'enabled') {
         body.classList.add('dark-mode');
         darkModeToggle.checked = true;
     }
 
+    // Toggle dark mode on checkbox change
     darkModeToggle.addEventListener('change', () => {
         if (darkModeToggle.checked) {
             body.classList.add('dark-mode');
@@ -233,30 +202,19 @@
         }
     });
 
-    // Function to update times
+    // Update times on clock cards
     function updateTimes() {
         const timeElements = document.querySelectorAll('.time');
-        const dayNightElements = document.querySelectorAll('.day-night');
-        const clockCards = document.querySelectorAll('.clock-card');
-
-        timeElements.forEach((element, index) => {
+        timeElements.forEach((element) => {
             const timezone = element.getAttribute('data-timezone');
             const now = new Date().toLocaleString('en-US', { timeZone: timezone, hour12: false });
-            const time = now.split(', ')[1];
-            element.textContent = time;
-
-            const hour = parseInt(time.split(':')[0]);
-            const isDaytime = hour >= 6 && hour < 18;
-            dayNightElements[index].textContent = isDaytime ? '☀️' : '🌙';
-            clockCards[index].classList.toggle('day', isDaytime);
-            clockCards[index].classList.toggle('night', !isDaytime);
+            element.textContent = now.split(', ')[1]; // Update time
         });
     }
 
-    // Update times immediately and then every second
+    // Initial call to update times and set interval for continuous updates
     updateTimes();
     setInterval(updateTimes, 1000);
 </script>
 </body>
 </html>
-
