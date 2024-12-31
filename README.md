@@ -47,7 +47,7 @@ WorldSphere is a web application that displays the current time for various time
 3. Clone the repository:
 
 ```plaintext
-git clone https://github.com/yourusername/WorldSphere.git
+git clone https://github.com/rh762/WorldSphere.git
 ```
 
 
